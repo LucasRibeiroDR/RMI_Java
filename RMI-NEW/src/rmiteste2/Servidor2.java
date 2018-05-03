@@ -35,7 +35,7 @@ public class Servidor2 extends UnicastRemoteObject implements Servico2{
     {
         try {
             Servidor2 servidor = new Servidor2();
-            Registry registry = LocateRegistry.createRegistry(8080);
+            Registry registry = LocateRegistry.createRegistry(8099);
             registry.bind("TesteLucas",  servidor);
             System.out.println("Servidor iniciado");
                         

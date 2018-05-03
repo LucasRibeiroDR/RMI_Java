@@ -5,7 +5,7 @@
  */
 package rmiteste1;
 
-import rmiteste1.Servico;
+//import rmiteste.Servico;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -22,30 +22,31 @@ import rmiteste2.Servico2;
  * @author DELL-Fabio
  */
 public class Cliente extends javax.swing.JDialog {
+
     Servico servico = null;
     Servico2 servico2 = null;
+
     /**
      * Creates new form Cliente
+     *
      * @param parent
      */
     public Cliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-                
+
         try {
-            Registry registry = LocateRegistry.getRegistry("172.16.102.16",12345);
+            Registry registry = LocateRegistry.getRegistry("172.16.102.16", 12345);
             servico = (Servico) registry.lookup("TesteFabio");
-            //servico = (Servico) Naming.lookup(localizacao);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Erro " + ex.getMessage());
         }
-        
-        try {
-            Registry registry = LocateRegistry.getRegistry("172.16.102.16",8080);
-            servico2 = (Servico2) registry.lookup("TesteLucas");
-            //servico = (Servico) Naming.lookup(localizacao);
+
+       try {
+           Registry registry2 = LocateRegistry.getRegistry("172.16.102.16", 8099);
+           servico2 = (Servico2) registry2.lookup("TesteLucas");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Erro " + ex.getMessage());
+           JOptionPane.showMessageDialog(null, "Erro " + ex.getMessage());
         }
 
     }
@@ -174,24 +175,23 @@ public class Cliente extends javax.swing.JDialog {
                             .addComponent(txtNome)
                             .addComponent(txtSenha)))
                     .addComponent(btnTrocarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel3))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtValorSaque, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
-                                .addComponent(txtValorDeposito))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(btnGoSaque)
-                                .addComponent(btnGoDeposito))
-                            .addGap(0, 0, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel5)
-                            .addGap(29, 29, 29)
-                            .addComponent(txtAgencia))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtValorSaque, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
+                            .addComponent(txtValorDeposito))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnGoSaque)
+                            .addComponent(btnGoDeposito))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(29, 29, 29)
+                        .addComponent(txtAgencia)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -244,20 +244,30 @@ public class Cliente extends javax.swing.JDialog {
         } catch (RemoteException ex) {
             JOptionPane.showMessageDialog(null, "Erro:" + ex.getMessage());
         }
-        */
+         */
         txtValorSaque.setEnabled(false);
         btnGoSaque.setEnabled(false);
-                
         txtValorDeposito.setEnabled(false);
         btnGoDeposito.setEnabled(false);
         boolean teste = false;
-        try {
-            teste = servico.ConectaBanco(txtNome.getText(), txtSenha.getText());
-        } catch (RemoteException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        
+        int NUMERO = Integer.parseInt(txtAgencia.getText());
+        
+        if (NUMERO == 1) {
+            try {
+                teste = servico.ConectaBanco(txtNome.getText(), txtSenha.getText());
+            } catch (RemoteException ex) {
+                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                teste = servico2.ConectaBanco(txtNome.getText(), txtSenha.getText());
+            } catch (RemoteException ex) {
+                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
-        if (teste)
-        {
+        if (teste) {
             JOptionPane.showMessageDialog(null, "Conectado");
             btnMostrarSaldo.setEnabled(true);
             btnRealizarDeposito.setEnabled(true);
@@ -266,12 +276,10 @@ public class Cliente extends javax.swing.JDialog {
             txtNome.setEnabled(false);
             txtSenha.setEnabled(false);
             btnTrocarUsuario.setEnabled(true);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(null, "erro no login");
         }
-        
+
     }//GEN-LAST:event_btnConectaActionPerformed
 
     private void btnMostrarSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarSaldoActionPerformed
@@ -280,30 +288,40 @@ public class Cliente extends javax.swing.JDialog {
         txtValorDeposito.setEnabled(false);
         btnGoDeposito.setEnabled(false);
         double teste = 0;
-        try {
-            teste = servico.Saldo(txtNome.getText(), txtSenha.getText());
-        } catch (RemoteException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        int NUMERO = Integer.parseInt(txtAgencia.getText());
+
+        if (NUMERO == 1) {
+            try {
+                teste = servico.Saldo(txtNome.getText(), txtSenha.getText());
+            } catch (RemoteException ex) {
+                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                teste = servico2.Saldo(txtNome.getText(), txtSenha.getText());
+            } catch (RemoteException ex) {
+                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
         JOptionPane.showMessageDialog(null, "Saldo: R$ " + Double.toString(teste));
 
-        
-        
+
     }//GEN-LAST:event_btnMostrarSaldoActionPerformed
 
     private void btnRealizarSaqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarSaqueActionPerformed
         txtValorSaque.setEnabled(true);
-        btnGoSaque.setEnabled(true);  
+        btnGoSaque.setEnabled(true);
         txtValorDeposito.setEnabled(false);
         btnGoDeposito.setEnabled(false);
 
-        
+
     }//GEN-LAST:event_btnRealizarSaqueActionPerformed
 
     private void btnRealizarDepositoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarDepositoActionPerformed
         txtValorSaque.setEnabled(false);
-        btnGoSaque.setEnabled(false);  
-        
+        btnGoSaque.setEnabled(false);
+
         btnGoDeposito.setEnabled(true);
         txtValorDeposito.setEnabled(true);
     }//GEN-LAST:event_btnRealizarDepositoActionPerformed
@@ -312,13 +330,15 @@ public class Cliente extends javax.swing.JDialog {
         double valorSaque = Double.parseDouble(txtValorSaque.getText());
         double teste1 = 0;
         double teste2 = 0;
-        if(txtAgencia.getText()=="1"){
+        int NUMERO = Integer.parseInt(txtAgencia.getText());
+
+        if (NUMERO == 1) {
             try {
                 teste1 = servico.Saldo(txtNome.getText(), txtSenha.getText()) - valorSaque;
-                if(teste1 >= 0){
+                if (teste1 >= 0) {
                     teste2 = servico.atualizarSaldo(txtNome.getText(), txtSenha.getText(), teste1);
                     JOptionPane.showMessageDialog(null, "Saque realizado com sucesso! Saldo atualizado: R$ " + Double.toString(teste1));
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "ERRO! Saldo insuficiente!");
                 }
             } catch (RemoteException ex) {
@@ -326,13 +346,13 @@ public class Cliente extends javax.swing.JDialog {
             }
             txtValorSaque.setText("");
             txtValorDeposito.setText("");
-        }else{
+        } else {
             try {
                 teste1 = servico2.Saldo(txtNome.getText(), txtSenha.getText()) - valorSaque;
-                if(teste1 >= 0){
+                if (teste1 >= 0) {
                     teste2 = servico2.atualizarSaldo(txtNome.getText(), txtSenha.getText(), teste1);
                     JOptionPane.showMessageDialog(null, "Saque realizado com sucesso! Saldo atualizado: R$ " + Double.toString(teste1));
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "ERRO! Saldo insuficiente!");
                 }
             } catch (RemoteException ex) {
@@ -346,23 +366,34 @@ public class Cliente extends javax.swing.JDialog {
     private void btnGoDepositoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoDepositoActionPerformed
         double valorDeposito = Double.parseDouble(txtValorDeposito.getText());
         double teste1 = 0;
-        double teste2 = 0;        
-        try {
-            teste1 = servico.Saldo(txtNome.getText(), txtSenha.getText()) + valorDeposito;
-            teste2 = servico.atualizarSaldo(txtNome.getText(), txtSenha.getText(), teste1);
-        } catch (RemoteException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        double teste2 = 0;
+        int NUMERO = Integer.parseInt(txtAgencia.getText());
+
+        if (NUMERO == 1) {
+            try {
+                teste1 = servico.Saldo(txtNome.getText(), txtSenha.getText()) + valorDeposito;
+                teste2 = servico.atualizarSaldo(txtNome.getText(), txtSenha.getText(), teste1);
+            } catch (RemoteException ex) {
+                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                teste1 = servico2.Saldo(txtNome.getText(), txtSenha.getText()) + valorDeposito;
+                teste2 = servico2.atualizarSaldo(txtNome.getText(), txtSenha.getText(), teste1);
+            } catch (RemoteException ex) {
+                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        
-        if(teste1 >= 0){
+
+        if (teste1 >= 0) {
             JOptionPane.showMessageDialog(null, "Depósito realizado com sucesso!");
         }
         txtValorSaque.setText("");
-        txtValorDeposito.setText("");        
+        txtValorDeposito.setText("");
     }//GEN-LAST:event_btnGoDepositoActionPerformed
 
     private void txtSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSenhaActionPerformed
-        txtSenha.setEchoChar((char)0);
+        txtSenha.setEchoChar((char) 0);
     }//GEN-LAST:event_txtSenhaActionPerformed
 
     private void btnTrocarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrocarUsuarioActionPerformed
@@ -435,7 +466,7 @@ public class Cliente extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField txtAgencia;
+    public javax.swing.JTextField txtAgencia;
     private javax.swing.JTextField txtNome;
     private javax.swing.JPasswordField txtSenha;
     private javax.swing.JTextField txtValorDeposito;

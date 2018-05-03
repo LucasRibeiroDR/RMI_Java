@@ -3,9 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/RMI-NEW/src/rmiteste1/Servidor.java</file>
             <file>file:/E:/RMI-NEW/src/rmiteste1/Servico.java</file>
+            <file>file:/E:/RMI-NEW/src/rmiteste2/obClienteBanco2.java</file>
             <file>file:/E:/RMI-NEW/src/rmiteste1/Cliente.java</file>
+            <file>file:/E:/RMI-NEW/src/rmiteste2/banco2.java</file>
+            <file>file:/E:/RMI-NEW/src/rmiteste1/obClienteBanco.java</file>
+            <file>file:/E:/RMI-NEW/src/rmiteste2/Cliente2.java</file>
+            <file>file:/E:/RMI-NEW/src/rmiteste2/Servico2.java</file>
+            <file>file:/E:/RMI-NEW/src/rmiteste2/Servidor2.java</file>
+            <file>file:/E:/RMI-NEW/src/rmiteste1/banco.java</file>
+            <file>file:/E:/RMI-NEW/src/rmiteste1/Servidor.java</file>
         </group>
     </open-files>
 </project-private>

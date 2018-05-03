@@ -15,7 +15,7 @@ import java.sql.SQLException;
  * @author DELL-Fabio
  */
 public class banco2 {
-   public String url = "jdbc:postgresql://localhost:5432/banco";  
+   public String url = "jdbc:postgresql://localhost:5432/banco2";  
    public String usuario = "postgres";  
    public String senha = "postgres";  
    
